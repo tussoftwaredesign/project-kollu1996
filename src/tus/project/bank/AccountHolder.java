@@ -18,7 +18,9 @@ public class AccountHolder {
             System.out.println("Invalid data given: cannot create account");
         }
     }
-    public AccountHolder() {}
+    public AccountHolder() {
+        this("Default", 1234567890L, "default123@gmail.com", "1234567A");
+    }
 
     @Override
     public String toString() {
@@ -62,10 +64,11 @@ public class AccountHolder {
         this.ppsn = ppsn;
     }
 
+    // Use of LVTI
     public boolean validData(String ppsn, String email, Long phoneNumber){
-        String ppsnRegex = "^[0-9]{7}[A-Z]{1,2}$";
-        String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-        String phoneRegex = "^(\\+\\d{1,3}[- ]?)?\\d{10}$";
+        var ppsnRegex = "^[0-9]{7}[A-Z]{1,2}$";
+        var emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        var phoneRegex = "^(\\+\\d{1,3}[- ]?)?\\d{10}$";
         return Pattern.matches(ppsnRegex, ppsn) && Pattern.matches(emailRegex, email) &&  Pattern.matches(phoneRegex, phoneNumber.toString());
     }
 }

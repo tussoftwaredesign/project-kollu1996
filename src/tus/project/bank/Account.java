@@ -1,20 +1,42 @@
 package tus.project.bank;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
-public class Account {
+
+public sealed class Account implements Operations permits CurrentAccount, FixedDepositAccount, SavingsAccount {
+
+    public enum AccountStatus {
+        ACTIVE,
+        INACTIVE,
+        SUSPENDED,
+        CLOSED
+    }
+    protected AccountStatus status;
+
+    public AccountStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AccountStatus status) {
+        this.status = status;
+    }
+
     protected String accountNumber;
     protected AccountHolder accountHolder;
     protected LocalDate acctOpenDate;
 
-    protected  boolean isActive;
-
     protected int balance;
+    protected float interestRate;
 
     public Account(String accountNumber, AccountHolder accountHolder) {
         this.accountNumber = accountNumber;
         this.accountHolder = accountHolder;
-        this.isActive = true;
     }
 
     public Account(String accountNumber, AccountHolder accountHolder, LocalDate acctOpenDate, int balance) {
@@ -22,7 +44,7 @@ public class Account {
         this.accountHolder = accountHolder;
         this.acctOpenDate = acctOpenDate;
         this.balance = balance;
-        this.isActive = true;
+        this.status = AccountStatus.ACTIVE;
     }
 
     public LocalDate getAcctOpenDate() {
@@ -31,14 +53,6 @@ public class Account {
 
     public void setAcctOpenDate(LocalDate acctOpenDate) {
         this.acctOpenDate = acctOpenDate;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
     }
 
     public int getBalance() {
@@ -57,7 +71,9 @@ public class Account {
                 '}';
     }
 
-    public Account(){}
+    public Account(){
+        this("`1234", new AccountHolder(), LocalDate.now(), 0);
+    }
 
     public String getAccountNumber() {
         return accountNumber;
@@ -73,5 +89,72 @@ public class Account {
 
     public void setAccountHolder(AccountHolder accountHolder) {
         this.accountHolder = accountHolder;
+    }
+
+    @Override
+    public boolean deposit(int amount) {
+        balance = balance + amount;
+        this.setBalance(balance);
+        return true;
+    }
+
+    // Method Overloading
+    @Override
+    public boolean withdraw(int amount) {
+        if(amount < balance){
+            balance = balance - amount;
+            this.setBalance(balance);
+        }
+        else{
+            System.out.println("Cannot update: withdrawl greater than available balance");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean withdraw(int amount, int transactionFee) {
+        if(amount < (balance + transactionFee)){
+            balance = balance - amount - transactionFee;
+            this.setBalance(balance);
+        }
+        else{
+            System.out.println("Cannot update: withdrawl greater than available balance plus transaction fee");
+            return false;
+        }
+        return true;
+    }
+
+    // Overriden in savings and fixed deposit
+    public double interestGained() {
+        return 0; // default
+    }
+
+    public float getTransactionFee(String transactionType){
+       return switch(transactionType){
+           case "WITHDRAWL", "DEPOSIT" -> 1.50f;
+           case "TRANSFER", "PAYMENT" -> 2.00f;
+           default -> throw new IllegalArgumentException("Invalid transaction type: " + transactionType);
+       };
+    }
+
+    // Checked Exception
+    public boolean validatePPSN(String filename) throws FileNotFoundException {
+         File input = new File(filename);
+         String ppsn = "";
+         String name = "";
+         List<String> words = new ArrayList<>();
+        String line = "";
+         Scanner scanner = new Scanner(input);
+         while(scanner.hasNext()){
+              line = scanner.nextLine();
+         }
+         words = List.of(line.split(" "));
+         ppsn = words.get(0);
+         name = words.get(1);
+         if(name.equalsIgnoreCase(this.getAccountHolder().getName())
+                 && ppsn.equalsIgnoreCase(this.getAccountHolder().getPpsn())){
+             return true;
+         }
+         return false;
     }
 }

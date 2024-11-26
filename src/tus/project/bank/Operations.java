@@ -1,6 +1,6 @@
 package tus.project.bank;
 
-public interface Transactions {
+public interface Operations {
     boolean deposit(int amount);
     boolean withdraw(int amount);
 }

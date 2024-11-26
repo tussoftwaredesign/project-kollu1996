@@ -1,5 +1,6 @@
 package tus.project.bank;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Bank {
@@ -8,10 +9,11 @@ public class Bank {
 
     private List<Account> accountList;
 
+    // Used defensive copying for account list
     public Bank(String name, String typeOfBank, List<Account> accountList) {
         this.name = name;
         this.typeOfBank = typeOfBank;
-        this.accountList = accountList;
+        this.accountList = new ArrayList<>(accountList);
     }
 
     public Bank(){}
@@ -42,10 +44,10 @@ public class Bank {
     }
 
     public List<Account> getAccountList() {
-        return accountList;
+        return new ArrayList<>(accountList);
     }
 
     public void setAccountList(List<Account> accountList) {
-        this.accountList = accountList;
+        this.accountList =  new ArrayList<>(accountList);
     }
 }
