@@ -3,7 +3,10 @@ package tus.project.bank;
 import java.time.LocalDate;
 
 public class Main {
+
     public static void main(String[] args) {
+
+        System.out.println(args[1]);
         System.out.println("Implementing a bank project");
         Contoller contoller = new Contoller();
         Bank bk = contoller.getInvestmentBank();

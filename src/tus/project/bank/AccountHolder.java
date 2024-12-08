@@ -65,6 +65,7 @@ public class AccountHolder {
     }
 
     // Use of LVTI
+    // Use of Pattern Matching
     public boolean validData(String ppsn, String email, Long phoneNumber){
         var ppsnRegex = "^[0-9]{7}[A-Z]{1,2}$";
         var emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";

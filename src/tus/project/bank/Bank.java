@@ -2,7 +2,7 @@ package tus.project.bank;
 
 import java.util.ArrayList;
 import java.util.List;
-
+// Use of private methods to show encapsulation
 public class Bank {
     private String name;
     private String typeOfBank;

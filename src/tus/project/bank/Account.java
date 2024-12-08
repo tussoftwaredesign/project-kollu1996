@@ -8,9 +8,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-
+// Use of Sealed class
 public sealed class Account implements Operations permits CurrentAccount, FixedDepositAccount, SavingsAccount {
 
+    // Use of enums
     public enum AccountStatus {
         ACTIVE,
         INACTIVE,
@@ -27,9 +28,9 @@ public sealed class Account implements Operations permits CurrentAccount, FixedD
         this.status = status;
     }
 
-    protected String accountNumber;
+    protected String accountNumber; // use of strings
     protected AccountHolder accountHolder;
-    protected LocalDate acctOpenDate;
+    protected LocalDate acctOpenDate; // Use of LocalDate API
 
     protected int balance;
     protected float interestRate;
@@ -71,6 +72,7 @@ public sealed class Account implements Operations permits CurrentAccount, FixedD
                 '}';
     }
 
+    // Use of this()
     public Account(){
         this("`1234", new AccountHolder(), LocalDate.now(), 0);
     }
@@ -101,6 +103,7 @@ public sealed class Account implements Operations permits CurrentAccount, FixedD
     // Method Overloading
     @Override
     public boolean withdraw(int amount) {
+        int counter = 0;
         if(amount < balance){
             balance = balance - amount;
             this.setBalance(balance);
@@ -130,6 +133,7 @@ public sealed class Account implements Operations permits CurrentAccount, FixedD
     }
 
     public float getTransactionFee(String transactionType){
+        // Switch Expresion - Java 23
        return switch(transactionType){
            case "WITHDRAWL", "DEPOSIT" -> 1.50f;
            case "TRANSFER", "PAYMENT" -> 2.00f;

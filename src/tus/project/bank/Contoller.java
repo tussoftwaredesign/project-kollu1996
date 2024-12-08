@@ -27,14 +27,25 @@ public class Contoller {
     }
     // acc variable is effectively final
     // Used method references with print statement
+    // use of lambda expression
     public void printAllActiveAccounts(Bank bank) {
-        bank.getAccountList().stream().filter((acc) -> acc.getStatus().equals(Account.AccountStatus.ACTIVE))
+        bank.getAccountList().stream().filter((acc) ->
+                    acc.getStatus().equals(Account.AccountStatus.ACTIVE))
                 .toList().forEach(System.out::println);
+    }
 
+    // use of effectively final
+    public void printAllAccounts(Bank bank) {
+        String default_msg = "";
+        bank.getAccountList().stream().forEach(acct ->{
+            // default_msg = "abc" - Gives error if you try to re initialize
+            System.out.println(default_msg + acct.toString());
+        });
     }
 
     public boolean validatePPSNFile(String filename){
         try {
+            // call by value
             return acct.validatePPSN(filename);
         }
         catch (FileNotFoundException ex){
@@ -48,6 +59,28 @@ public class Contoller {
          for(Account acc: accts){
             bank.getAccountList().add(acc);
          }
+    }
+
+    // Types of banks in the industry
+    // use of string builder and arrays.
+    // use of un checked exception/run time exception
+    public static void typesOfBanks() throws Exception {
+        try {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Central ");
+            sb.append("Commercial ");
+            sb.append("Retail ");
+            sb.append("Investment");
+            sb.append("Cooperative ");
+            String[] BankTypes = sb.toString().split(" ");
+            System.out.println("Different bank types are: ");
+            for (int k = 0; k < 5; k++) {
+                System.out.println(BankTypes[k]);
+            }
+        }
+        catch (ArrayIndexOutOfBoundsException ex){
+            System.out.println("Issue with printing banks: "+ ex.getMessage());
+        }
     }
 
 }

@@ -3,6 +3,7 @@ package tus.project.bank;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+// Use of inheritance. Extending from account
 public non-sealed class FixedDepositAccount extends Account implements Operations {
     int term;
     int penalty; // This represents percentage of money given before pre maturity date
