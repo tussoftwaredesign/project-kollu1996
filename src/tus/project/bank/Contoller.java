@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 // This class contains all test data. Will be called from Main by creating an instance of it
 public class Contoller {
 
-    static Bank bank = new Bank("AIB", "Retail", new ArrayList<>());
+    public static Bank bank = new Bank("AIB", "Retail", new ArrayList<>());
     AccountHolder accHolder = new AccountHolder("John", 9876543210L, "john123@gmail.com", "1234567A");
     SavingsAccount acct = new SavingsAccount("AIB1234567", accHolder, LocalDate.of(2022, 11, 23), 100);
     CurrentAccount acct1 = new CurrentAccount("AIB3592049", accHolder,  LocalDate.of(2022, 11, 24), 200);
@@ -19,12 +19,6 @@ public class Contoller {
         addAccountToBank(acct, acct1, acct2);
     }
 
-    public Bank getInvestmentBank(){
-       List<Account> ackList = new ArrayList<Account>();
-       ackList.add(acct);
-       Bank bk = new Bank("AIB", "Investment", ackList);
-       return bk;
-    }
     // acc variable is effectively final
     // Used method references with print statement
     // use of lambda expression
@@ -36,13 +30,14 @@ public class Contoller {
 
     // use of effectively final
     public void printAllAccounts(Bank bank) {
-        String default_msg = "";
+        String default_msg = "Account is: ";
         bank.getAccountList().stream().forEach(acct ->{
             // default_msg = "abc" - Gives error if you try to re initialize
             System.out.println(default_msg + acct.toString());
         });
     }
 
+    // This throws un checked exception. File not found - at run time
     public boolean validatePPSNFile(String filename){
         try {
             // call by value
@@ -55,10 +50,16 @@ public class Contoller {
     }
 
     // varargs
-    static void addAccountToBank(Account... accts){
-         for(Account acc: accts){
-            bank.getAccountList().add(acc);
-         }
+    static void addAccountToBank(Account... accts) {
+        if (accts == null || accts.length == 0) {
+            System.out.println("No accounts provided to add.");
+            return;
+        }
+        for (Account acc : accts) {
+            if (!bank.getAccountList().contains(acc)) { // Avoid duplicates
+                bank.getAccountList().add(acc);
+            }
+        }
     }
 
     // Types of banks in the industry
@@ -81,6 +82,14 @@ public class Contoller {
         catch (ArrayIndexOutOfBoundsException ex){
             System.out.println("Issue with printing banks: "+ ex.getMessage());
         }
+    }
+
+    public void addMoney(int amount){
+        acct1.deposit(amount);
+    }
+
+    public void withdrawMoney(int amount){
+        acct1.withdraw(amount);
     }
 
 }

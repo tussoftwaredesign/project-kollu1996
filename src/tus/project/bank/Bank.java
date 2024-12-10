@@ -44,7 +44,7 @@ public class Bank {
     }
 
     public List<Account> getAccountList() {
-        return new ArrayList<>(accountList);
+        return accountList;
     }
 
     public void setAccountList(List<Account> accountList) {

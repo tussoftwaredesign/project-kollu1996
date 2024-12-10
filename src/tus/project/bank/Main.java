@@ -6,22 +6,37 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println(args[1]);
         System.out.println("Implementing a bank project");
+        System.out.println("--------------------------------------------------- ");
         Contoller contoller = new Contoller();
-        Bank bk = contoller.getInvestmentBank();
-        for(Account ac: bk.getAccountList()){
+
+        // Creating bank
+        contoller.createBank();
+        System.out.println("Created a Retail Bank: " + Contoller.bank.getName());
+        System.out.println("Account list in bank: ");
+
+        // Printing all account numbers in bank
+        // check if it is of type savings account
+        for(Account ac: Contoller.bank.getAccountList()){
             if(ac instanceof SavingsAccount) {
-                SavingsAccount savAcc = (SavingsAccount) ac;
-                System.out.println("Interest gained for account "+ savAcc.getAccountNumber() + " is: " + savAcc.interestGained());
+                System.out.println("Savings Account: "+ ac.toString());
+            }
+            else if(ac instanceof FixedDepositAccount){
+                System.out.println("Fixed Deposit Account: "+ ac.toString());
             }
             else{
-                System.out.println("Account number is: "+ ac.getAccountNumber());
+                System.out.println("Current Account: "+ ac.getAccountNumber());
             }
         }
         try {
+            // Code to print a sample bank statement
             Statements st = new Statements("AIB12345", "John Marek", LocalDate.of(2024, 10, 5), LocalDate.of(2024, 11, 26));
             System.out.println(st.toString());
+
+            System.out.println("--------------------------------------------------- ");
+
+
+            // Code to validate PPSN file
             boolean status = contoller.validatePPSNFile("C:\\Users\\sreen\\Downloads\\ppsnfile.txt");
             if(status){
                 System.out.println("Valid PPSN File");
