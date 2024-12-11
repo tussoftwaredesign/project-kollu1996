@@ -19,6 +19,7 @@ public sealed class Account implements Operations permits CurrentAccount, FixedD
         CLOSED
     }
     protected AccountStatus status;
+    protected List<Statements> accountStatements;
 
     public AccountStatus getStatus() {
         return status;
@@ -34,6 +35,23 @@ public sealed class Account implements Operations permits CurrentAccount, FixedD
 
     protected int balance;
     protected float interestRate;
+    protected List<Card> cardList;
+
+    public float getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(float interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public List<Card> getCardList() {
+        return cardList;
+    }
+
+    public void setCardList(List<Card> cardList) {
+        this.cardList = cardList;
+    }
 
     public Account(String accountNumber, AccountHolder accountHolder) {
         this.accountNumber = accountNumber;
@@ -125,6 +143,14 @@ public sealed class Account implements Operations permits CurrentAccount, FixedD
             return false;
         }
         return true;
+    }
+
+    public List<Statements> getAccountStatements() {
+        return accountStatements;
+    }
+
+    public void setAccountStatements(List<Statements> accountStatements) {
+        this.accountStatements = accountStatements;
     }
 
     // Overriden in savings and fixed deposit
